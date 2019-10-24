@@ -37,7 +37,7 @@ const Main = () => {
 
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <LinearGradient colors={['#C5F0F8', '#FFDED5']}>
+            <LinearGradient colors={['#D4F9FE', '#B4B0BE']}>
                 <Carousel 
                     data={data}
                     renderItem={_renderItem}

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Feather';
 import Main from './components/main';
 import News from './components/news';
 import Search from './components/search';
@@ -26,15 +26,17 @@ const AppContainer = createAppContainer(
         navigationOptions: {
           title: "Main",
           tabBarColor: "#FFFFFF",
-          tabBarIcon: <Icon name="ios-home" style={{color: '#F85C50'}} size={36}/>
+          showLabel: false,
+          tabBarIcon: <Icon name="home" style={{color: '#F85C50'}} size={36}/>
         }
       },
       News: {
         screen: News,
         navigationOptions: {
           title: "News",
-          tabBarColor: "#D1D3D4",
-          tabBarIcon:  <Icon name="ios-paper" style={{color: '#F85C50'}} size={36}/>
+          showLabel: false,
+          tabBarColor: "#FFFFFF",
+          tabBarIcon:  <Icon name="map" style={{color: '#F85C50'}} size={36}/>
         }
       },
       Search: {
@@ -42,14 +44,14 @@ const AppContainer = createAppContainer(
         navigationOptions: {
           title: "Search",
           tabBarColor: "#FFFFFF",
-          tabBarIcon: <Icon name="ios-search" style={{color: '#F85C50'}} size={36}/>
+          tabBarIcon: <Icon name="search" style={{color: '#F85C50'}} size={36}/>
+          
         }
       }
     },
     {
       initialRouteName: 'Main',
       shifting: true,
-      showLabel: false, 
     }
   )
 );
