@@ -26,7 +26,7 @@ const AppContainer = createAppContainer(
         navigationOptions: {
           title: "Main",
           tabBarColor: "#FFFFFF",
-          tabBarIcon: ({titleColor}) => <Icon name="ios-home" color={titleColor} size={34}/>
+          tabBarIcon: <Icon name="ios-home" style={{color: '#F85C50'}} size={36}/>
         }
       },
       News: {
@@ -34,7 +34,7 @@ const AppContainer = createAppContainer(
         navigationOptions: {
           title: "News",
           tabBarColor: "#D1D3D4",
-          tabBarIcon: ({titleColor}) => <Icon name="ios-paper" color={titleColor} size={34}/>
+          tabBarIcon:  <Icon name="ios-paper" style={{color: '#F85C50'}} size={36}/>
         }
       },
       Search: {
@@ -42,14 +42,12 @@ const AppContainer = createAppContainer(
         navigationOptions: {
           title: "Search",
           tabBarColor: "#FFFFFF",
-          tabBarIcon: ({titleColor}) => <Icon name="ios-search" color={titleColor} size={34}/>
+          tabBarIcon: <Icon name="ios-search" style={{color: '#F85C50'}} size={36}/>
         }
       }
     },
     {
       initialRouteName: 'Main',
-      activeColor: '#F8F8F8',  
-      inactiveColor: '#586589',  
       shifting: true,
       showLabel: false, 
     }
