@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Dimensions } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
@@ -17,6 +18,8 @@ class App extends Component{  //  MaterialBottomTabNavigator FUNCTIONAL COMPONEN
       );
   }
 }
+
+const { height, width } = Dimensions.get('window');
 
 const AppContainer = createAppContainer(
   createMaterialBottomTabNavigator(

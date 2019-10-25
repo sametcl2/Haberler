@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { View, Dimensions , Text, Image, StyleSheet } from 'react-native';
+import { View, Dimensions , Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Feather';
 
 const API_KEY='7fc981806c254389af08ebb60c3c2d48';
 const { height, width } = Dimensions.get('window');
@@ -19,6 +20,13 @@ const Main = () => {
                 setData(json.articles);
             })
     }
+
+    const onPress = item => {
+        Linking.canOpenURL(item.url)
+            .then(supported => {
+                supported && Linking.openURL(item.url)
+            })
+    }
     
     useEffect(() => {
         fetchData();
@@ -27,10 +35,15 @@ const Main = () => {
     const _renderItem = ({item, index}) => {
         return (
             <View style={styles.container} index={index}>
-                 <View style={styles.item}>
-                    <Image source={{ uri: `${item.urlToImage}` }} style={styles.image} />
-                    <Text style= {styles.text}>{item.title}</Text>
-                 </View>
+                <Image source={{ uri: `${item.urlToImage}` }} style={styles.image} />
+                <View style={styles.bottom}>
+                    <Text style={styles.text}>{item.title}</Text>
+                    <TouchableOpacity onPress={() => onPress(item)}>
+                        <View style={styles.button}>
+                            <Icon name="arrow-right" size={30} style={{color: '#F5F2F0'}}/>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -48,7 +61,7 @@ const Main = () => {
                     containerCustomStyle={{ overflow: 'visible' }}
                     contentContainerCustomStyle={{ overflow: 'visible' }}
                     enableMomentum={true}
-                    layout={'stack'}
+                    layout={'default'}
                 />
             </LinearGradient>
         </View>
@@ -62,10 +75,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 100
     },
-    item: {
-        flex: 1,
+    bottom: {
+        flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center',
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        backgroundColor: '#F5F2F0',
+        width: width / 1.2,
     },
     image: {
         width: width / 1.2 ,
@@ -73,14 +89,19 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20
     },
-    text: {
-        width: width / 1.2,
+    button: {
+        backgroundColor: 'black',
+        padding: 20,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
-        backgroundColor: '#F5F2F0',
+    },
+    text: {
+        flex: 1,
+        alignItems: 'center',
         fontSize: 15,
         padding: 10,
-        textAlign: 'center'
+        textAlign: 'center',
+       
     }
 });
 
