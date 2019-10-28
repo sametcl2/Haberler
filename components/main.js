@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { View, Dimensions , Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { View, Dimensions , Text, Image, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 
 const API_KEY='7fc981806c254389af08ebb60c3c2d48';
 const { height, width } = Dimensions.get('window');
-
 
 const Main = () => {
 
@@ -35,12 +34,13 @@ const Main = () => {
     const _renderItem = ({item, index}) => {
         return (
             <View style={styles.container} index={index}>
+                <StatusBar hidden={true}/>
                 <Image source={{ uri: `${item.urlToImage}` }} style={styles.image} />
                 <View style={styles.bottom}>
                     <Text style={styles.text}>{item.title}</Text>
                     <TouchableOpacity onPress={() => onPress(item)}>
                         <View style={styles.button}>
-                            <Icon name="arrow-right" size={30} style={{color: '#F5F2F0'}}/>
+                            <Icon name="arrow-right" size={34} style={{color: '#F5F2F0'}}/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -50,7 +50,7 @@ const Main = () => {
 
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <LinearGradient colors={['#D4F9FE', '#B4B0BE']}>
+            <LinearGradient colors={['#09203F', '#FFFFFF']}>
                 <Carousel 
                     data={data}
                     renderItem={_renderItem}
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 20
     },
     button: {
-        backgroundColor: 'black',
+        backgroundColor: '#586589',
         padding: 20,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         padding: 10,
         textAlign: 'center',
-       
     }
 });
 
