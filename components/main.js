@@ -52,6 +52,9 @@ const Main = () => {
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <LinearGradient colors={['#09203F', '#FFFFFF']}>
+                <View style={styles.header}>
+                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>Türkiye'de öne çıkanlar</Text>
+                </View>
                 <Carousel 
                     data={data}
                     renderItem={_renderItem}
@@ -92,6 +95,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 100
+    },
+    header: {
+        backgroundColor: 'white',
+        marginTop: 100,
+        width: 300,
+        padding: 20,
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50,
+        
     },
     bottom: {
         flexDirection: 'row',

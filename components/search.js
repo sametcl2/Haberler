@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         justifyContent: 'space-around',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        shadowColor: "#000",
     },
     search: {
         height: 40,
