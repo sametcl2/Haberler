@@ -72,7 +72,7 @@ const Main = () => {
                         dotStyle={{
                             width: 15,
                             height: 15,
-                            backgroundColor: '#F85C50'
+                            backgroundColor: '#586589'
                         }}
                         inactiveDotStyle={{
                             width: 3,
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         fontSize: 15,
+        fontWeight: 'bold',
         padding: 10,
         textAlign: 'center',
     }

@@ -22,8 +22,8 @@ const Search = () => {
                 .then(response => response.json())
                 .then(json => setData(json.articles))
         );
-
-        setSearch('');        
+        setSearch('');  
+        setData('');      
     }
 
     const handleLink = url => {
@@ -46,7 +46,7 @@ const Search = () => {
     }  
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
               <View style={styles.searchBar}>
                     <TextInput 
                         value={search}
@@ -76,10 +76,10 @@ const Search = () => {
                                         source={{uri: `${item.urlToImage}`}}
                                     />
                                     <View style={{padding: 15, marginBottom: 12}}>
-                                        <Text style={{fontSize: 15}}>{item.description}</Text>
+                                        <Text style={{fontSize: 18}}>{item.description}</Text>
                                     </View>
                                     <View style={styles.bottom}>    
-                                        <View style={{marginLeft: 15}}>
+                                        <View style={{marginLeft: 15, width: 200}}>
                                             <Text style={{fontWeight: "bold"}}>{item.author}</Text>
                                             <Text style={{fontWeight: "bold"}}>{item.publishedAt}</Text>
                                         </View>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         borderRadius: 30
     },
     main: {
-        flex: 1,
+        alignItems: 'center',
     },
     card: {
         flex: 1,
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.60,
         shadowRadius: 16.00,
-        elevation: 15,
+        elevation: 20,
     },
     image: {
         height: 200,
