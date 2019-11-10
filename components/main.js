@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Dimensions , Text, Image, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -10,6 +10,7 @@ const { height, width } = Dimensions.get('window');
 const Main = () => {
 
     const [data, setData] = useState('');
+    const [activeIndex, setActiveIndex] = useState(0);
 
     const fetchData = () => {
         const url = `https://newsapi.org/v2/top-headlines?country=tr&apiKey=${API_KEY}`;
@@ -62,7 +63,24 @@ const Main = () => {
                     contentContainerCustomStyle={{ overflow: 'visible' }}
                     enableMomentum={true}
                     layout={'default'}
+                    onSnapToItem={ index => setActiveIndex(index) }
                 />
+                { 
+                    <Pagination 
+                        dotsLength={data.length}
+                        activeDotIndex={activeIndex}
+                        dotStyle={{
+                            width: 15,
+                            height: 15,
+                            backgroundColor: '#F85C50'
+                        }}
+                        inactiveDotStyle={{
+                            width: 3,
+                            height: 3,
+                            backgroundColor: '#586589'
+                        }}
+                    />
+                }
             </LinearGradient>
         </View>
     );

@@ -47,54 +47,54 @@ const Search = () => {
 
     return (
         <View style={{flex: 1}}>
-            <View style={styles.searchBar}>
-                <TextInput 
-                    value={search}
-                    onChange={handleChange}
-                    placeholder="Search news"
-                    style={styles.search}
-                />
-                <TouchableOpacity onPress={handleSubmit}>
-                    <View style={styles.button}>
-                        <Icon name="search" size={30} style={{color: 'white'}}/>
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.main}>
-                {
-                    data != '' &&
-                    <FlatList
-                        data={data}
-                        keyExtractor={(item, index) => item.title}
-                        renderItem={({item}) => 
-                            <View style={styles.card}>
-                                <View style={styles.title}>
-                                    <Text style={{fontSize: 20, fontWeight: "bold"}}>{item.title}</Text>
-                                </View>
-                                <Image 
-                                    style={styles.image}
-                                    source={{uri: `${item.urlToImage}`}}
-                                />
-                                <View style={{padding: 15, marginBottom: 12}}>
-                                    <Text style={{fontSize: 15}}>{item.description}</Text>
-                                </View>
-                                <View style={styles.bottom}>    
-                                    <View style={{marginLeft: 15}}>
-                                        <Text style={{fontWeight: "bold"}}>{item.author}</Text>
-                                        <Text style={{fontWeight: "bold"}}>{item.publishedAt}</Text>
-                                    </View>
-                                    <TouchableOpacity onPress={() => handleLink(item.url)}>
-                                        <View style={styles.linkButton}>
-                                            <Icon name="arrow-right" size={34} style={{color: '#F5F2F0'}}/>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        }
+              <View style={styles.searchBar}>
+                    <TextInput 
+                        value={search}
+                        onChange={handleChange}
+                        placeholder="Search news"
+                        style={styles.search}
                     />
-                }
-                <LoadingView />
-            </View>
+                    <TouchableOpacity onPress={handleSubmit}>
+                        <View style={styles.button}>
+                            <Icon name="search" size={30} style={{color: 'white'}}/>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.main}>
+                    {
+                        data != '' &&
+                        <FlatList
+                            data={data}
+                            keyExtractor={(item, index) => item.title}
+                            renderItem={({item}) => 
+                                <View style={styles.card}>
+                                    <View style={styles.title}>
+                                        <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.title}</Text>
+                                    </View>
+                                    <Image 
+                                        style={styles.image}
+                                        source={{uri: `${item.urlToImage}`}}
+                                    />
+                                    <View style={{padding: 15, marginBottom: 12}}>
+                                        <Text style={{fontSize: 15}}>{item.description}</Text>
+                                    </View>
+                                    <View style={styles.bottom}>    
+                                        <View style={{marginLeft: 15}}>
+                                            <Text style={{fontWeight: "bold"}}>{item.author}</Text>
+                                            <Text style={{fontWeight: "bold"}}>{item.publishedAt}</Text>
+                                        </View>
+                                        <TouchableOpacity onPress={() => handleLink(item.url)}>
+                                            <View style={styles.linkButton}>
+                                                <Icon name="arrow-right" size={34} style={{color: '#F5F2F0'}}/>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            }
+                        />
+                    }
+                    <LoadingView />
+                </View>
         </View>
     );
 }
@@ -129,9 +129,17 @@ const styles = StyleSheet.create({
     },
     card: {
         flex: 1,
-        backgroundColor: 'lightgray',
+        backgroundColor: '#F0F6F4',
         borderRadius: 20,
-        margin: 10
+        margin: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
+        shadowOpacity: 0.60,
+        shadowRadius: 16.00,
+        elevation: 15,
     },
     image: {
         height: 200,
@@ -148,7 +156,7 @@ const styles = StyleSheet.create({
         padding: 20
     },
     title: {
-        padding: 10,
+        padding: 15,
         justifyContent: "center",
         alignItems: "center"
     },
