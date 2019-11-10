@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, FlatList, Image, Dimensions } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, FlatList, Image, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import LottieView from 'lottie-react-native';
 import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';
 
 const API_KEY='7fc981806c254389af08ebb60c3c2d48';
-const { height, width } = Dimensions.get('window');
 
 const Search = () => {
     const [search, setSearch] = useState('');
@@ -26,7 +25,13 @@ const Search = () => {
 
         setSearch('');        
     }
-    
+
+    const handleLink = url => {
+        Linking.canOpenURL(url)
+            .then(supported => {
+                supported && Linking.openURL(url)
+            })
+    }    
     const LoadingView = () => {
         const { promiseInProgress } = usePromiseTracker();
         return(
@@ -58,23 +63,31 @@ const Search = () => {
             <View style={styles.main}>
                 {
                     data != '' &&
-                    <FlatList 
+                    <FlatList
                         data={data}
+                        keyExtractor={(item, index) => item.title}
                         renderItem={({item}) => 
                             <View style={styles.card}>
+                                <View style={styles.title}>
+                                    <Text style={{fontSize: 20, fontWeight: "bold"}}>{item.title}</Text>
+                                </View>
                                 <Image 
                                     style={styles.image}
                                     source={{uri: `${item.urlToImage}`}}
                                 />
-                                <View style={styles.cardDetails}>
-                                    <View>
-                                        <Text>{item.title}</Text>
-                                        <Text>{item.description}</Text>
+                                <View style={{padding: 15, marginBottom: 12}}>
+                                    <Text style={{fontSize: 15}}>{item.description}</Text>
+                                </View>
+                                <View style={styles.bottom}>    
+                                    <View style={{marginLeft: 15}}>
+                                        <Text style={{fontWeight: "bold"}}>{item.author}</Text>
+                                        <Text style={{fontWeight: "bold"}}>{item.publishedAt}</Text>
                                     </View>
-                                    <View>
-                                        <Text>{item.author}</Text>
-                                        <Text>{item.publishedAt}</Text>
-                                    </View>
+                                    <TouchableOpacity onPress={() => handleLink(item.url)}>
+                                        <View style={styles.linkButton}>
+                                            <Icon name="arrow-right" size={34} style={{color: '#F5F2F0'}}/>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         }
@@ -86,11 +99,10 @@ const Search = () => {
     );
 }
 
-
 const styles = StyleSheet.create({
     searchBar: {
         marginVertical: 30,
-        marginBottom: 70,
+        marginBottom: 20,
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row'
@@ -112,34 +124,34 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 30
     },
-    image: {
-        height: 200,
-        width: width/4,
-        borderTopLeftRadius: 25,
-        borderBottomLeftRadius: 25
-    },
     main: {
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 15
-        
     },
     card: {
-        width: width - 30,
-        height: 200,
-        flexDirection: 'row',
-        backgroundColor: '#E6E7E8',
-        borderRadius: 25,
-        marginBottom: 30
+        flex: 1,
+        backgroundColor: 'lightgray',
+        borderRadius: 20,
+        margin: 10
     },
-    cardDetails: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        marginHorizontal: 20,
-        width: width - 30
-    }
+    image: {
+        height: 200,
+    },
+    bottom: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    linkButton: {
+        backgroundColor:  '#F85C50',
+        borderTopLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        padding: 20
+    },
+    title: {
+        padding: 10,
+        justifyContent: "center",
+        alignItems: "center"
+    },
 })
 
 export default Search;
