@@ -18,7 +18,7 @@ const Search = () => {
 
     const handleSubmit = () => {
         trackPromise(
-            fetch(`https://newsapi.org/v2/everything?q=${search}&apiKey=${API_KEY}`)
+            fetch(`https://newsapi.org/v2/everything?q=${search}&sortBy=popularity&apiKey=${API_KEY}`)
                 .then(response => response.json())
                 .then(json => setData(json.articles))
         );
@@ -34,7 +34,7 @@ const Search = () => {
     }    
     const LoadingView = () => {
         const { promiseInProgress } = usePromiseTracker();
-        return(
+        return (
             promiseInProgress &&
             <LottieView
                 source={require('../loading.json')}
@@ -80,6 +80,8 @@ const Search = () => {
                                     </View>
                                     <View style={styles.bottom}>    
                                         <View style={{marginLeft: 15, width: 200}}>
+                                            <Text style={{fontWeight: "bold", fontSize: 20}}>{item.source.name}</Text>
+                                            <View style={{borderBottomColor: 'black', borderBottomWidth: 1, width: 60, marginVertical: 4}}/>
                                             <Text style={{fontWeight: "bold"}}>{item.author}</Text>
                                             <Text style={{fontWeight: "bold"}}>{item.publishedAt}</Text>
                                         </View>

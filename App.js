@@ -15,8 +15,6 @@ class App extends Component{  //  MaterialBottomTabNavigator FUNCTIONAL COMPONEN
   }
 }
 
-const { height, width } = Dimensions.get('window');
-
 const AppContainer = createAppContainer(
     createBottomTabNavigator(
     {
@@ -35,7 +33,7 @@ const AppContainer = createAppContainer(
           title: "News",
           showLabel: false,
           tabBarColor: "#FFFFFF",
-          tabBarIcon:({tintColor}) => <Icon name="map" color={tintColor} size={40}/>
+          tabBarIcon:({tintColor}) => <Icon name="sliders" color={tintColor} size={40}/>
         }
       },
       Search: {

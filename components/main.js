@@ -35,7 +35,6 @@ const Main = () => {
     const _renderItem = ({item, index}) => {
         return (
             <View style={styles.container} index={index}>
-                <StatusBar hidden={true}/>
                 <Image source={{ uri: `${item.urlToImage}` }} style={styles.image} />
                 <View style={styles.bottom}>
                     <Text style={styles.text}>{item.title}</Text>
@@ -51,9 +50,10 @@ const Main = () => {
 
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <StatusBar hidden={true}/>
             <LinearGradient colors={['#09203F', '#FFFFFF']}>
-                <View style={styles.header}>
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>Türkiye'de öne çıkanlar</Text>
+                 <View style={styles.header}>
+                    <Text style={{fontSize: 18, fontWeight: 'bold', marginLeft: 8}}>Türkiye'de öne çıkanlar</Text>
                 </View>
                 <Carousel 
                     data={data}
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     header: {
         backgroundColor: 'white',
         marginTop: 100,
-        width: 300,
+        width: 250,
         padding: 20,
         borderTopRightRadius: 50,
         borderBottomRightRadius: 50,
