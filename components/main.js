@@ -9,7 +9,7 @@ const { height, width } = Dimensions.get('window');
 
 const Main = () => {
 
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
     const fetchData = () => {
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     bottom: {
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
         backgroundColor: '#F5F2F0',
@@ -121,14 +122,14 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#586589',
-        padding: 20,
+        padding: 22,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
     },
     text: {
         flex: 1,
         alignItems: 'center',
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: 'bold',
         padding: 10,
         textAlign: 'center',
