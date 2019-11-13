@@ -32,7 +32,7 @@ const News = () => {
         return (
             promiseInProgress &&
             <LottieView
-                source={require('../loading.json')}
+                source={require('../res/loading.json')}
                 autoPlay
                 loop
                 style={{ width: 250, height: 250}}
@@ -43,7 +43,9 @@ const News = () => {
     return (
         <View style={{flex: 1}}>
             <View style={styles.buttons}>
-                <ScrollView horizontal={true} endFillColor={{color: '"#F85C50"'}}>
+                <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
                     <TouchableOpacity onPress={() => handleFetch('business')}>
                         <View style={styles.button}>
                             <Text style={styles.text}>Business</Text>
@@ -78,7 +80,14 @@ const News = () => {
             </View>
             <View style={styles.news}>
                 {
-                    data != '' &&
+                    data == '' ? 
+                    <LottieView 
+                        source={require('../res/newspre.json')}
+                        autoPlay
+                        loop
+                        style={{ width: 250, height: 250}}
+                    />
+                    : 
                     <FlatList
                         data={data}
                         keyExtractor={(item, index) => item.title}

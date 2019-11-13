@@ -37,7 +37,7 @@ const Search = () => {
         return (
             promiseInProgress &&
             <LottieView
-                source={require('../loading.json')}
+                source={require('../res/loading.json')}
                 autoPlay
                 loop
                 style={{ width: 250, height: 250}}
