@@ -1,22 +1,85 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, Image, Linking, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { View, StyleSheet, Text, TouchableOpacity, FlatList, Image, Linking } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';
+import { FloatingAction } from "react-native-floating-action";
+
 
 const API_KEY='7fc981806c254389af08ebb60c3c2d48';
+
+const actions = [
+    {
+      text: "Finans",
+      icon: require("../res/business.png"),
+      name: "business",
+      position: 1,
+      color: 'black'
+    },
+    {
+      text: "Magazin",
+      icon: require("../res/entertainment.png"),
+      name: "entertainment",
+      position: 2,
+      color: 'black'
+
+    },
+    {
+      text: "Sağlık",
+      icon: require("../res/health.png"),
+      name: "health",
+      position: 3,
+      color: 'black'
+
+    },
+    {
+      text: "Bilim",
+      icon: require("../res/science.png"),
+      name: "science",
+      position: 4,
+      color: 'black'
+
+    },
+    {
+        text: "Spor",
+        icon: require("../res/sports.png"),
+        name: "sports",
+        position: 5,
+      color: 'black'
+
+    },
+    {
+        text: "Teknoloji",
+        icon: require("../res/tech.png"),
+        name: 'technology',
+        position: 6,
+      color: 'black'
+    }
+  ];
 
 const News = () => {
 
     const [data, setData] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+    const [currentTopic, setCurrentTopic] = useState('');
+    const [page, setPage] = useState(1);
 
     const handleFetch = topic => {
         setData([]);
+        setRefreshing(true);
         trackPromise(
-            fetch(`https://newsapi.org/v2/top-headlines?country=tr&category=${topic}&apiKey=${API_KEY}`)
+            fetch(`https://newsapi.org/v2/top-headlines?country=tr&category=${topic}&apiKey=${API_KEY}&page=${page}`)
                 .then(response => response.json())
-                .then(json => setData(json.articles))
+                .then(json => {
+                    setData(json.articles);
+                    setRefreshing(false);
+                    setCurrentTopic(topic);
+                    if (page === 3) {
+                        setPage(1);
+                    } else {
+                        setPage(page + 1)
+                    }
+                })
         )
     }
 
@@ -32,7 +95,7 @@ const News = () => {
         return (
             promiseInProgress &&
             <LottieView
-                source={require('../res/loading.json')}
+                source={require('../res/spinner.json')}
                 autoPlay
                 loop
                 style={{ width: 250, height: 250}}
@@ -41,87 +104,53 @@ const News = () => {
     }  
 
     return (
-        <View style={{flex: 1}}>
-            <View style={styles.buttons}>
-                <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}>
-                    <TouchableOpacity onPress={() => handleFetch('business')}>
-                        <View style={styles.button}>
-                            <Text style={styles.text}>Business</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleFetch('entertainment')}>
-                        <View style={styles.button}>
-                            <Text style={styles.text}>Entertainment</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleFetch('health')}>
-                        <View style={styles.button}>
-                            <Text style={styles.text}>Health</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleFetch('science')}>
-                        <View style={styles.button}>
-                            <Text style={styles.text}>Science</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleFetch('sports')}>
-                        <View style={styles.button}>
-                            <Text style={styles.text}>Sports</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleFetch('technology')}>
-                        <View style={styles.button}>
-                            <Text style={styles.text}>Technology</Text>
-                        </View>
-                    </TouchableOpacity>
-                </ScrollView>
-            </View>
-            <View style={styles.news}>
-                {
-                    data == '' ? 
-                    <LottieView 
-                        source={require('../res/newspre.json')}
-                        autoPlay
-                        loop
-                        style={{ width: 250, height: 250}}
-                    />
-                    : 
-                    <FlatList
-                        data={data}
-                        keyExtractor={(item, index) => item.title}
-                        renderItem={({item}) => 
-                        <View style={styles.card}>
-                            <View style={styles.title}>
-                                <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.title}</Text>
-                            </View>
-                            <Image 
-                                style={{height: 200}}
-                                source={{uri: `${item.urlToImage}`}}
-                            />
-                            <View style={{padding: 15, marginBottom: 12}}>
-                                <Text style={{fontSize: 18}}>{item.description}</Text>
-                            </View>
-                            <View style={styles.bottom}>    
-                                <View style={{marginLeft: 15, width: 200}}>
-                                    <Text style={{fontWeight: "bold", fontSize: 20}}>{item.source.name}</Text>
-                                    <View style={{borderBottomColor: 'black', borderBottomWidth: 1, width: 60, marginVertical: 4}}/>
-                                    <Text style={{fontWeight: "bold"}}>{item.author}</Text>
-                                    <Text style={{fontWeight: "bold"}}>{item.publishedAt}</Text>
-                                </View>
-                                <TouchableOpacity onPress={() => handleLink(item.url)}>
-                                    <View style={styles.linkButton}>
-                                        <Icon name="arrow-right" size={34} style={{color: '#F5F2F0'}}/>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        }
-                    />
-                }
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            {
+                data == '' ? 
                 <LoadingView />
-            </View>
+                : 
+                <FlatList
+                data={data}
+                keyExtractor={(item, index) => item.title}
+                onEndReached={() => handleFetch(currentTopic)}
+                refreshing={refreshing}
+                onRefresh={() => handleFetch(currentTopic)}
+                renderItem={({item}) => 
+                <TouchableOpacity onPress={() => handleLink(item.url)}>
+                    <View style={styles.card}>
+                        <View style={styles.title}>
+                            <Text style={{fontSize: 24, fontFamily: 'Martel-Black', lineHeight: 34}}>{item.title}</Text>
+                        </View>
+                        <View style={{padding: 15, marginBottom: 12, marginTop: -30}}>
+                            <Text style={{fontSize: 13, fontFamily: 'Martel-Regular', lineHeight: 23}}>{item.description}</Text>
+                        </View>
+                        <Image 
+                            style={{height: 200}}
+                            source={{uri: `${item.urlToImage}`}}
+                        />
+                        <View
+                        style={{
+                            borderBottomColor: 'black',
+                            borderBottomWidth: 1,
+                            marginTop: 30,
+                            marginBottom: -10
+                        }}
+                        />
+                    </View>
+                </TouchableOpacity>
+                }
+            />
+            }
+            <FloatingAction
+                actions={actions}
+                color="black"
+                openOnMount={true}
+                shadow={{shadowOpacity: 4.35, shadowOffset: { width: 5, height: 15 }, shadowColor: "#000000", shadowRadius: 70}}
+                onPressItem={name => {
+                    handleFetch(name);
+                    setPage(1);
+                }}
+            />           
         </View>
     );
 }
@@ -147,7 +176,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingHorizontal: 5
     },
-    main: {
+    main: { // backgroundColor: 'white',
+        // borderRadius: 20,
         alignItems: 'center',
     },
     news: {
@@ -156,17 +186,7 @@ const styles = StyleSheet.create({
     },
     card: {
         flex: 1,
-        backgroundColor: '#F0F6F4',
-        borderRadius: 20,
         margin: 10,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 10,
-        },
-        shadowOpacity: 0.60,
-        shadowRadius: 16.00,
-        elevation: 20,
     },
     image: {
         height: 200,
@@ -185,8 +205,12 @@ const styles = StyleSheet.create({
     title: {
         padding: 15,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
+    // titles: {
+    //     fontFamily: 'font',
+    //     fontSize: 25
+    // }
 });
 
 export default News;

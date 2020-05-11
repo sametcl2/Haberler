@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Dimensions } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/Feather';
@@ -10,8 +9,9 @@ import Search from './components/search';
 class App extends Component{  //  MaterialBottomTabNavigator FUNCTIONAL COMPONENT'DE ÇALIŞMIYOR !!!   
   render() {
       return (
-        <AppContainer/>
-      );
+         <AppContainer/>
+
+         );
   }
 }
 
@@ -22,7 +22,7 @@ const AppContainer = createAppContainer(
         screen: Main,
         navigationOptions: {
           title: "Main",
-          tabBarColor: "#FFFFFF",
+          tabBarColor: "#000000",
           showLabel: false,
           tabBarIcon:({tintColor}) => <Icon name="home" color={tintColor} size={40}/>,          
         },
@@ -32,7 +32,7 @@ const AppContainer = createAppContainer(
         navigationOptions: {
           title: "News",
           showLabel: false,
-          tabBarColor: "#FFFFFF",
+          tabBarColor: "#000000",
           tabBarIcon:({tintColor}) => <Icon name="sliders" color={tintColor} size={40}/>
         }
       },
@@ -40,7 +40,7 @@ const AppContainer = createAppContainer(
         screen: Search,
         navigationOptions: {
           title: "Search",
-          tabBarColor: "#FFFFFF",
+          tabBarColor: "#000000",
           tabBarIcon:({tintColor}) => <Icon name="search" color={tintColor} size={40}/>
 
         }
@@ -50,7 +50,7 @@ const AppContainer = createAppContainer(
       tabBarOptions: {
         initialRouteName: 'Main',
         showLabel: false, 
-        activeTintColor: '#F85C50',  
+        activeTintColor: '#000000',  
         inactiveTintColor: '#586589',  
         style: {
             backgroundColor: '#FFFFFF' 

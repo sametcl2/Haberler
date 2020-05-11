@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.haberler"
+        applicationId "com.haberler3"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

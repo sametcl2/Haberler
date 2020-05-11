@@ -37,7 +37,7 @@ const Search = () => {
         return (
             promiseInProgress &&
             <LottieView
-                source={require('../res/loading.json')}
+                source={require('../res/spinner.json')}
                 autoPlay
                 loop
                 style={{ width: 250, height: 250}}
@@ -62,40 +62,30 @@ const Search = () => {
                 </View>
                 <View style={styles.main}>
                     {
-                        data != '' &&
+                        data == '' ? 
+                        <LoadingView />
+                        :
                         <FlatList
                             data={data}
                             keyExtractor={(item, index) => item.title}
                             renderItem={({item}) => 
-                                <View style={styles.card}>
-                                    <View style={styles.title}>
-                                        <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.title}</Text>
-                                    </View>
-                                    <Image 
-                                        style={styles.image}
-                                        source={{uri: `${item.urlToImage}`}}
-                                    />
-                                    <View style={{padding: 15, marginBottom: 12}}>
-                                        <Text style={{fontSize: 18}}>{item.description}</Text>
-                                    </View>
-                                    <View style={styles.bottom}>    
-                                        <View style={{marginLeft: 15, width: 200}}>
-                                            <Text style={{fontWeight: "bold", fontSize: 20}}>{item.source.name}</Text>
-                                            <View style={{borderBottomColor: 'black', borderBottomWidth: 1, width: 60, marginVertical: 4}}/>
-                                            <Text style={{fontWeight: "bold"}}>{item.author}</Text>
-                                            <Text style={{fontWeight: "bold"}}>{item.publishedAt}</Text>
-                                        </View>
-                                        <TouchableOpacity onPress={() => handleLink(item.url)}>
-                                            <View style={styles.linkButton}>
-                                                <Icon name="arrow-right" size={34} style={{color: '#F5F2F0'}}/>
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
+                            <TouchableOpacity onPress={() => handleLink(item.url)}>
+                            <View style={styles.card}>
+                                <View style={styles.title}>
+                                    <Text style={{fontSize: 24, fontFamily: 'Martel-Black', lineHeight: 34}}>{item.title}</Text>
                                 </View>
+                                <View style={{padding: 15, marginBottom: 12, marginTop: -25}}>
+                                    <Text style={{fontSize: 13, fontFamily: 'Martel-Regular', lineHeight: 23}}>{item.description}</Text>
+                                </View>
+                                <Image 
+                                    style={{height: 200, borderBottomLeftRadius: 20, borderBottomRightRadius: 20}}
+                                    source={{uri: `${item.urlToImage}`}}
+                                />
+                            </View>
+                        </TouchableOpacity>
                             }
                         />
                     }
-                    <LoadingView />
                 </View>
         </View>
     );
@@ -122,7 +112,7 @@ const styles = StyleSheet.create({
     button: {
         height: 60,
         width: 60,
-        backgroundColor: '#F85C50',
+        backgroundColor: '#000000',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 30

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Dimensions , Text, Image, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import LinearGradient from 'react-native-linear-gradient';
+import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import { usePromiseTracker } from "react-promise-tracker";
+import { trackPromise } from 'react-promise-tracker';
 
 const API_KEY='7fc981806c254389af08ebb60c3c2d48';
 const { height, width } = Dimensions.get('window');
@@ -14,11 +16,14 @@ const Main = () => {
 
     const fetchData = () => {
         const url = `https://newsapi.org/v2/top-headlines?country=tr&apiKey=${API_KEY}`;
-        fetch(url)
-            .then(response => response.json())
-            .then(json => {
-                setData(json.articles);
-            })
+        setData([]);
+        trackPromise(
+            fetch(url)
+                .then(response => response.json())
+                .then(json => {
+                    setData(json.articles);
+                })
+        )
     }
 
     const onPress = item => {
@@ -31,6 +36,19 @@ const Main = () => {
     useEffect(() => {
         fetchData();
     }, []);
+
+    const LoadingView = () => {
+        const { promiseInProgress } = usePromiseTracker();
+        return (
+            promiseInProgress &&
+            <LottieView
+                source={require('../res/spinner.json')}
+                autoPlay
+                loop
+                style={{ width: 250, height: 250}}
+            />
+        );
+    }
 
     const _renderItem = ({item, index}) => {
         return (
@@ -49,43 +67,51 @@ const Main = () => {
     }
 
     return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <StatusBar hidden={true}/>
-            <LinearGradient colors={['#09203F', '#FFFFFF']}>
+        <>
+            <StatusBar barStyle="light-content" backgroundColor="black"/>
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                  <View style={styles.header}>
-                    <Text style={{fontSize: 18, fontWeight: 'bold', marginLeft: 8}}>Türkiye'de öne çıkanlar</Text>
+                    <Text style={{fontSize: 25, fontFamily: 'Martel-Black', margin: 'auto'}}>Türkiye'de öne çıkanlar</Text>
                 </View>
-                <Carousel 
-                    data={data}
-                    renderItem={_renderItem}
-                    sliderWidth={width }
-                    itemWidth={width / 1.2}
-                    sliderHeight={height}
-                    itemHeight={height}
-                    containerCustomStyle={{ overflow: 'visible' }}
-                    contentContainerCustomStyle={{ overflow: 'visible' }}
-                    enableMomentum={true}
-                    layout={'default'}
-                    onSnapToItem={ index => setActiveIndex(index) }
-                />
-                { 
-                    <Pagination 
-                        dotsLength={data.length}
-                        activeDotIndex={activeIndex}
-                        dotStyle={{
-                            width: 15,
-                            height: 15,
-                            backgroundColor: '#586589'
-                        }}
-                        inactiveDotStyle={{
-                            width: 3,
-                            height: 3,
-                            backgroundColor: '#586589'
-                        }}
-                    />
+                {
+                    data == '' ?
+                        <LoadingView /> 
+                        :
+                        <>
+                            <Carousel 
+                                data={data}
+                                renderItem={_renderItem}
+                                sliderWidth={width }
+                                itemWidth={width / 1.2}
+                                sliderHeight={height}
+                                itemHeight={height}
+                                containerCustomStyle={{ overflow: 'visible' }}
+                                contentContainerCustomStyle={{ overflow: 'visible' }}
+                                enableMomentum={true}
+                                layout={'default'}
+                                onSnapToItem={ index => setActiveIndex(index) }
+                            />
+                            { 
+                                <Pagination 
+                                    dotsLength={data.length}
+                                    containerStyle={{marginHorizontal: -15}}
+                                    activeDotIndex={activeIndex}
+                                    dotStyle={{
+                                        width: 15,
+                                        height: 15,
+                                        backgroundColor: '#000000'
+                                    }}
+                                    inactiveDotStyle={{
+                                        width: 3,
+                                        height: 3,
+                                        backgroundColor: '#586589'
+                                    }}
+                                />
+                            }
+                        </>
                 }
-            </LinearGradient>
-        </View>
+            </View>
+        </>
     );
 }
 
@@ -94,16 +120,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 100
+        position: 'relative',
+        marginTop: 120
     },
     header: {
-        backgroundColor: 'white',
-        marginTop: 100,
-        width: 250,
-        padding: 20,
-        borderTopRightRadius: 50,
-        borderBottomRightRadius: 50,
-        
+        width: 350,
+        padding: 10,
+        position: 'absolute',
+        top: 40,
+        left: 27,
+        display: 'flex',
+        justifyContent: 'center'
     },
     bottom: {
         flexDirection: 'row',
@@ -111,7 +138,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
-        backgroundColor: '#F5F2F0',
+        backgroundColor: '#000000',
         width: width / 1.2,
     },
     image: {
@@ -121,7 +148,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 20
     },
     button: {
-        backgroundColor: '#586589',
         padding: 22,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
@@ -129,10 +155,13 @@ const styles = StyleSheet.create({
     text: {
         flex: 1,
         alignItems: 'center',
-        fontSize: 16,
-        fontWeight: 'bold',
-        padding: 10,
+        fontSize: 13,
         textAlign: 'center',
+        fontFamily:'Martel-ExtraBold',
+        color: 'white',
+        textAlign: 'left',
+        marginHorizontal: 20,
+        marginVertical: 8,
     }
 });
 

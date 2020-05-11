@@ -1,4 +1,4 @@
-package com.haberler;
+package com.haberler3;
 
 import com.facebook.react.ReactActivity;
 
