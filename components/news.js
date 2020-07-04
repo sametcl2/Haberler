@@ -110,34 +110,28 @@ const News = () => {
                 <LoadingView />
                 : 
                 <FlatList
-                data={data}
-                keyExtractor={(item, index) => item.title}
-                onEndReached={() => handleFetch(currentTopic)}
-                refreshing={refreshing}
-                onRefresh={() => handleFetch(currentTopic)}
-                renderItem={({item}) => 
-                <TouchableOpacity onPress={() => handleLink(item.url)}>
-                    <View style={styles.card}>
-                        <View style={styles.title}>
-                            <Text style={{fontSize: 24, fontFamily: 'Martel-Black', lineHeight: 34}}>{item.title}</Text>
+                    data={data}
+                    keyExtractor={(item, index) => item.title}
+                    ItemSeparatorComponent={() => <View style={styles.itemSeperator}/>}
+                    onEndReached={() => handleFetch(currentTopic)}
+                    refreshing={refreshing}
+                    onRefresh={() => handleFetch(currentTopic)}
+                    renderItem={({item}) => 
+                    <TouchableOpacity onPress={() => handleLink(item.url)}>
+                        <View style={styles.card}>
+                            <View style={styles.title}>
+                                <Text style={{fontSize: 22, fontFamily: 'Martel-Black', lineHeight: 34}}>{item.title}</Text>
+                            </View>
+                            <View style={{padding: 14, marginBottom: 12, marginTop: -25}}>
+                                <Text style={{fontSize: 15, fontFamily: 'Martel-Light', lineHeight: 23}}>{item.description}</Text>
+                            </View>
+                            <Image 
+                                style={{height: 200}}
+                                source={{uri: `${item.urlToImage}`}}
+                            />
+                            
                         </View>
-                        <View style={{padding: 15, marginBottom: 12, marginTop: -30}}>
-                            <Text style={{fontSize: 13, fontFamily: 'Martel-Regular', lineHeight: 23}}>{item.description}</Text>
-                        </View>
-                        <Image 
-                            style={{height: 200}}
-                            source={{uri: `${item.urlToImage}`}}
-                        />
-                        <View
-                        style={{
-                            borderBottomColor: 'black',
-                            borderBottomWidth: 1,
-                            marginTop: 30,
-                            marginBottom: -10
-                        }}
-                        />
-                    </View>
-                </TouchableOpacity>
+                    </TouchableOpacity>
                 }
             />
             }
@@ -207,10 +201,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    // titles: {
-    //     fontFamily: 'font',
-    //     fontSize: 25
-    // }
+    itemSeperator: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        marginTop: 20,
+        marginHorizontal: 25
+    }
 });
 
 export default News;

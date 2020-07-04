@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Dimensions , Text, Image, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
 import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';
+import LinearGradient from 'react-native-linear-gradient';
 
 const API_KEY='7fc981806c254389af08ebb60c3c2d48';
 const { height, width } = Dimensions.get('window');
@@ -32,7 +33,7 @@ const Main = () => {
                 supported && Linking.openURL(item.url)
             })
     }
-    
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -50,18 +51,25 @@ const Main = () => {
         );
     }
 
-    const _renderItem = ({item, index}) => {
+    const _renderItem = ({item, index}, parallaxProps) => {
         return (
-            <View style={styles.container} index={index}>
-                <Image source={{ uri: `${item.urlToImage}` }} style={styles.image} />
-                <View style={styles.bottom}>
+            <View index={index} style={styles.container}>
+                <ParallaxImage
+                    source={{uri: item.urlToImage}}
+                    containerStyle={styles.image}
+                    style={styles.image}
+                    parallaxFactor={0.3}
+                    showSpinner={true}
+                    {...parallaxProps}
+                />
+                <LinearGradient colors={['transparent', '#000000']} style={styles.bottom}>
                     <Text style={styles.text}>{item.title}</Text>
                     <TouchableOpacity onPress={() => onPress(item)}>
                         <View style={styles.button}>
                             <Icon name="arrow-right" size={34} style={{color: '#F5F2F0'}}/>
                         </View>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
             </View>
         );
     }
@@ -70,15 +78,15 @@ const Main = () => {
         <>
             <StatusBar barStyle="light-content" backgroundColor="black"/>
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                 <View style={styles.header}>
-                    <Text style={{fontSize: 25, fontFamily: 'Martel-Black', margin: 'auto'}}>Türkiye'de öne çıkanlar</Text>
-                </View>
                 {
                     data == '' ?
-                        <LoadingView /> 
+                        <LoadingView />
                         :
                         <>
-                            <Carousel 
+                            <View style={styles.header}>
+                                <Text style={{fontSize: 25, fontFamily: 'Martel-Black', margin: 'auto'}}>Türkiye'de öne çıkanlar</Text>
+                            </View>
+                            <Carousel
                                 data={data}
                                 renderItem={_renderItem}
                                 sliderWidth={width }
@@ -90,9 +98,10 @@ const Main = () => {
                                 enableMomentum={true}
                                 layout={'default'}
                                 onSnapToItem={ index => setActiveIndex(index) }
+                                hasParallaxImages={true}
                             />
-                            { 
-                                <Pagination 
+                            {
+                                <Pagination
                                     dotsLength={data.length}
                                     containerStyle={{marginHorizontal: -15}}
                                     activeDotIndex={activeIndex}
@@ -119,9 +128,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+        marginBottom: Platform.select({ ios: 0, android: 1 }),
         alignItems: 'center',
         position: 'relative',
-        marginTop: 120
+        marginTop: 210,
+        width: width - 60,
+        height: width + 150,
+        position: "relative"
     },
     header: {
         width: 350,
@@ -138,14 +151,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
-        backgroundColor: '#000000',
-        width: width / 1.2,
+        position: "absolute",
+        bottom: 118,
+        width: width - 67,
+        left: 0
+
     },
     image: {
         width: width / 1.2 ,
         height: 300,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
+        borderRadius: 20,
+        ...StyleSheet.absoluteFillObject,
     },
     button: {
         padding: 22,
@@ -155,13 +171,14 @@ const styles = StyleSheet.create({
     text: {
         flex: 1,
         alignItems: 'center',
-        fontSize: 13,
+        fontSize: 16,
         textAlign: 'center',
         fontFamily:'Martel-ExtraBold',
         color: 'white',
         textAlign: 'left',
-        marginHorizontal: 20,
-        marginVertical: 8,
+        marginHorizontal: 15,
+        marginVertical: 10,
+        fontWeight: "bold"
     }
 });
 
